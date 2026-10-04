@@ -63,3 +63,11 @@ Liberation Serif fonts are bundled under `public/fonts/` with their SIL Open Fon
 ## Updating the published app
 
 The build assigns a content version to the entry script, stylesheet, and the complete JavaScript module graph. New releases therefore load fresh document/export code even when old canonical script URLs remain cached. `dist/build.json` records the active release, F4 paper requirement, and vector PDF export. Deploy the newly built `dist/` and reopen the published page; a unique `?v=<release>` suffix can also force a fresh HTML request. Browser-saved attendance data stays on the same origin.
+
+## Monthly FDTR Related activities
+
+In the FDTR monthly form, choose **Add a change → Related activity**. Select a date or range, enter the printed description and optional memorandum/special order reference, then choose full day, morning, afternoon/evening or custom periods. Preset hours are editable; lunch is not counted. Full day replaces all recurring work on those dates; half days preserve the other half; custom periods trim only overlapping work. Activities do not carry into another month.
+
+Descriptions print in an available Class/Consultation row, while activity times and hours remain in Related activities. Order references remain in the monthly review and backup. Existing recurring Related activities are retained for compatibility and can be removed manually from saved setup. DTR behavior, templates and export geometry are unchanged.
+
+`tests/fdtr-activities.test.mjs` covers replacement, half days, custom clipping, totals, month/form isolation and backup validation. `scripts/fdtr-activity-check.mjs` covers the browser entry, editing, Word/PDF export and mobile layout.

@@ -1,6 +1,6 @@
-import {PAPER,CSS_PAPER} from './paper-size.js';
-import {DAYS,CATEGORIES,freshState,buildMonth,monthRecord,validateMonth,validateSessions,validateRelatedActivity,validateBackup,daysInMonth,timeLabel,duration} from './model.js';
-import {generateDocx,renderDocument,makePDF,download} from './documents.js';
+import {PAPER,CSS_PAPER} from './paper-size.3372c2f0106a.js';
+import {DAYS,CATEGORIES,freshState,buildMonth,monthRecord,validateMonth,validateSessions,validateRelatedActivity,validateBackup,daysInMonth,timeLabel,duration} from './model.3372c2f0106a.js';
+import {generateDocx,renderDocument,makePDF,download} from './documents.3372c2f0106a.js';
 const KEY='dtr-fdtr-generator-v1',main=document.querySelector('main'),dialog=document.querySelector('#dialog');
 let state=freshState(),storageIssue='',view='home',type='dtr',step=0,month=new Date().toLocaleDateString('en-CA',{year:'numeric',month:'2-digit'}).slice(0,7),previewBlob=null,restoreCandidate=null,undo=null,changeDraft=null,scheduleIndex=null,toastTimer,previewRequest=0;
 if(!/^\d{4}-\d{2}$/.test(month))month=`${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
