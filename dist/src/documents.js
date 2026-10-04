@@ -16,5 +16,20 @@ if(type==='dtr'){
 }
 for(const t of all(xml,'t'))t.textContent=t.textContent.replace(/\{\{([^}]+)\}\}/g,(_,key)=>values[key]??'');zip.file('word/document.xml',new XMLSerializer().serializeToString(xml));return zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',compression:'DEFLATE'});}
 export async function renderDocument(blob,container){await docx.renderAsync(blob,container,null,{className:'institutional',inWrapper:true,ignoreWidth:false,ignoreHeight:false,breakPages:true,ignoreLastRenderedPageBreak:true,renderHeaders:true,renderFooters:true,useBase64URL:true});await document.fonts.ready;}
-export async function makePDF(container){const pdf=await PDFLib.PDFDocument.create();for(const page of container.querySelectorAll('section.institutional')){const canvas=await html2canvas(page,{scale:3,backgroundColor:'#ffffff',logging:false,useCORS:false,windowWidth:1100,onclone:doc=>{doc.querySelectorAll('.preview-scale').forEach(n=>n.style.transform='none');doc.querySelectorAll('section.institutional').forEach(n=>{n.style.boxShadow='none';n.style.margin='0';});}});const png=await pdf.embedPng(canvas.toDataURL('image/png'));const p=pdf.addPage([595.276,841.89]);p.drawImage(png,{x:0,y:0,width:595.276,height:841.89});}if(!pdf.getPageCount())throw Error('Open the preview before downloading.');return new Blob([await pdf.save()],{type:'application/pdf'});}
+export async function makePDF(container){
+ const pdf=await PDFLib.PDFDocument.create();
+ for(const page of container.querySelectorAll('section.institutional')){
+  // Use layout dimensions: the fit-to-screen transform must not crop the capture.
+  const canvas=await html2canvas(page,{scale:3,width:Math.max(page.offsetWidth,page.scrollWidth),height:Math.max(page.offsetHeight,page.scrollHeight),backgroundColor:'#ffffff',logging:false,useCORS:false,windowWidth:1100,onclone:doc=>{
+   doc.querySelectorAll('.preview-scale').forEach(n=>n.style.transform='none');
+   doc.querySelectorAll('section.institutional').forEach(n=>{n.style.boxShadow='none';n.style.margin='0';});
+  }});
+  const png=await pdf.embedPng(canvas.toDataURL('image/png')),p=pdf.addPage([595.276,841.89]);
+  // Browser row wrapping may grow a page. Fit all content without stretching it.
+  const fit=Math.min(p.getWidth()/canvas.width,p.getHeight()/canvas.height),width=canvas.width*fit,height=canvas.height*fit;
+  p.drawImage(png,{x:(p.getWidth()-width)/2,y:(p.getHeight()-height)/2,width,height});
+ }
+ if(!pdf.getPageCount())throw Error('Open the preview before downloading.');
+ return new Blob([await pdf.save()],{type:'application/pdf'});
+}
 export function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);}

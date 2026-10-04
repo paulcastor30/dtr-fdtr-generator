@@ -45,3 +45,9 @@ Microsoft Word and the browser renderer can differ in layout. A real nontechnica
 `DTR-FDTR-Generator.zip` contains source, prepared blank templates, local browser libraries, the built static website, tests, GitHub Pages workflow, and documentation. It excludes personal attendance data, private QA files, backups, and failed experimental forms. Optional template-preparation scripts are maintenance tools; their original local reference files are not required to use or publish the app.
 
 The private August backup is delivered separately for the user's local use. Never add that backup to a public repository.
+
+## Print-blocker fix — 4 October 2026
+
+A valid DTR containing morning entries throughout a 31-day month can make docx-preview grow its single section beyond A4. The former 1126-pixel check cleared the generated document and disabled review and both downloads. Height overflow now produces an advisory while preserving the review checkbox and downloads. PDF export captures unscaled layout dimensions and fits the entire form proportionally onto A4, without cropping or stretching.
+
+Verified with `scripts/print-check.mjs`: the previously blocked tall preview remains reviewable; both Word and PDF download; the PDF contains one A4 page and preserves the form proportions. The existing DTR/FDTR browser workflow and eight available model tests pass; the private August-fixture test remains skipped because the fixture is absent.
