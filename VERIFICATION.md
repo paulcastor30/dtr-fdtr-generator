@@ -51,3 +51,9 @@ The private August backup is delivered separately for the user's local use. Neve
 A valid DTR containing morning entries throughout a 31-day month can make docx-preview grow its single section beyond A4. The former 1126-pixel check cleared the generated document and disabled review and both downloads. Height overflow now produces an advisory while preserving the review checkbox and downloads. PDF export captures unscaled layout dimensions and fits the entire form proportionally onto A4, without cropping or stretching.
 
 Verified with `scripts/print-check.mjs`: the previously blocked tall preview remains reviewable; both Word and PDF download; the PDF contains one A4 page and preserves the form proportions. The existing DTR/FDTR browser workflow and eight available model tests pass; the private August-fixture test remains skipped because the fixture is absent.
+
+## PDF layout capture fix — 4 October 2026
+
+PDF export now freezes the preview's computed styles and rasterizes its HTML using the browser's native SVG/HTML renderer. This replaces html2canvas text reconstruction, which could change spacing, underline placement, and table text alignment. The existing proportional A4 fit and review gate remain in place. Export does not modify the displayed preview.
+
+Visually compared the signature names, separate underlines, certification lines, and in-charge labels against browser screenshots. `scripts/pdf-layout-check.mjs` verifies actual downloaded DTR and FDTR PDFs at desktop and mobile widths: the embedded images match the captured preview pixels, page counts remain one/two, and preview markup remains unchanged. The print-blocker regression, full workflow checks, and eight available model tests pass. The private reference-fixture test remains skipped.

@@ -16,14 +16,32 @@ if(type==='dtr'){
 }
 for(const t of all(xml,'t'))t.textContent=t.textContent.replace(/\{\{([^}]+)\}\}/g,(_,key)=>values[key]??'');zip.file('word/document.xml',new XMLSerializer().serializeToString(xml));return zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',compression:'DEFLATE'});}
 export async function renderDocument(blob,container){await docx.renderAsync(blob,container,null,{className:'institutional',inWrapper:true,ignoreWidth:false,ignoreHeight:false,breakPages:true,ignoreLastRenderedPageBreak:true,renderHeaders:true,renderFooters:true,useBase64URL:true});await document.fonts.ready;}
+// Freeze the browser's resolved styles before rasterizing. Reconstructing text with
+// a canvas layout engine changes Word spacing, underlines, and table alignment.
+export async function captureDocumentPage(page,scale=3){
+ await document.fonts.ready;
+ const clone=page.cloneNode(true),originals=[page,...page.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];
+ originals.forEach((element,i)=>{
+  const style=getComputedStyle(element);
+  copies[i].style.cssText=Array.from(style).map(property=>`${property}:${style.getPropertyValue(property)};`).join('');
+ });
+ clone.style.margin='0';clone.style.boxShadow='none';clone.style.transform='none';
+ const width=Math.max(page.offsetWidth,page.scrollWidth),height=Math.max(page.offsetHeight,page.scrollHeight);
+ const markup=new XMLSerializer().serializeToString(clone);
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><foreignObject width="100%" height="100%">${markup}</foreignObject></svg>`;
+ const image=new Image();
+ image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+ await image.decode();
+ const canvas=document.createElement('canvas');canvas.width=width*scale;canvas.height=height*scale;
+ const context=canvas.getContext('2d');
+ context.fillStyle='#ffffff';context.fillRect(0,0,canvas.width,canvas.height);
+ context.drawImage(image,0,0,canvas.width,canvas.height);
+ return canvas;
+}
 export async function makePDF(container){
  const pdf=await PDFLib.PDFDocument.create();
  for(const page of container.querySelectorAll('section.institutional')){
-  // Use layout dimensions: the fit-to-screen transform must not crop the capture.
-  const canvas=await html2canvas(page,{scale:3,width:Math.max(page.offsetWidth,page.scrollWidth),height:Math.max(page.offsetHeight,page.scrollHeight),backgroundColor:'#ffffff',logging:false,useCORS:false,windowWidth:1100,onclone:doc=>{
-   doc.querySelectorAll('.preview-scale').forEach(n=>n.style.transform='none');
-   doc.querySelectorAll('section.institutional').forEach(n=>{n.style.boxShadow='none';n.style.margin='0';});
-  }});
+  const canvas=await captureDocumentPage(page);
   const png=await pdf.embedPng(canvas.toDataURL('image/png')),p=pdf.addPage([595.276,841.89]);
   // Browser row wrapping may grow a page. Fit all content without stretching it.
   const fit=Math.min(p.getWidth()/canvas.width,p.getHeight()/canvas.height),width=canvas.width*fit,height=canvas.height*fit;
