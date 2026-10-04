@@ -73,3 +73,9 @@ Independent PDF parsing verifies selectable names/months, embedded fonts, zero p
 A shared paper definition now drives Word generation, preview fitting, PDF dimensions, and fit-to-screen calculations. Prepared templates and the maintenance script use 12240 × 18720 twips; exported PDFs use 612 × 936 points. The interface identifies F4 as 8.5 × 13 inches. Print CSS uses the same dimensions.
 
 Both Word downloads and every PDF page were checked for the confirmed dimensions. The vector PDF checks retain selectable text, embedded fonts, expected one/two-page output, and agreement with desktop/mobile preview positions. The printing regression and complete application workflow checks pass. Only paper-size attributes in the prepared template XML changed; template text and table formatting are retained.
+
+## Supplied PDF diagnosis and cache fix — 4 October 2026
+
+The supplied app download was an older A4 raster export: one 2382 × 3408 RGB image at approximately 291 dpi, no font objects, and a 595.276 × 841.89-point page. The supplied Word conversion contained embedded Times New Roman fonts on a 612 × 936-point page. This explains the softness when zoomed and confirms that the supplied download did not originate from the current F4 vector exporter.
+
+Build output now uses a content-versioned entry script, stylesheet, complete module graph, vendor URLs, and template URLs. Local preview HTML/canonical assets revalidate, while versioned assets can be cached immutably. The PDF layout check deliberately replaces the old unversioned app/documents/vector module URLs with failing stale scripts; the release still downloads vector PDFs with embedded fonts and the confirmed F4 dimensions. Deploying the new build is required to update the live site.

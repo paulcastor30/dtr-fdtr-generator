@@ -8,7 +8,10 @@ const browser=await chromium.launch({executablePath:'/Applications/Microsoft Edg
 try{
  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));
+ // Simulate the exact failure: stale canonical scripts remain in browser cache.
+ for(const name of ['app','documents','vector-pdf'])await page.route(`**/src/${name}.js`,route=>route.fulfill({contentType:'text/javascript',body:'throw new Error("Stale cached exporter was loaded");'}));
  await page.goto('http://127.0.0.1:4173/repository-name/');
+ assert.match(await page.locator('meta[name="app-build"]').getAttribute('content'),/^[a-f0-9]{12}$/);
  await page.evaluate(async()=>{
   const {freshState}=await import('./src/model.js'),s=freshState();
   s.profile.name='TEST FIRST MIDDLE LAST';s.profile.department='TEST DEPARTMENT';s.profile.designation='Faculty';
@@ -75,5 +78,5 @@ try{
   await page.locator('[data-action="home"]').first().click();
  }
  assert.deepEqual(errors,[]);assert.ok(requests.every(u=>u.startsWith('http://127.0.0.1:4173/')||u.startsWith('data:')));
- console.log('PASS: vector text and lines, embedded fonts, selectable content, F4 page counts, preview glyph positions, identical desktop/mobile PDF geometry, unchanged preview, no external requests.');
+ console.log('PASS: vector text and lines, embedded fonts, selectable content, F4 page counts, preview glyph positions, identical desktop/mobile PDF geometry, unchanged preview, no external requests, stale cached scripts bypassed.');
 }finally{await browser.close();}

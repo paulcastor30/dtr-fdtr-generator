@@ -59,3 +59,7 @@ These tests cover calendar boundaries, leap years, time arithmetic, overlaps, fo
 JSZip, docx-preview 0.3.6, pdf-lib, and @pdf-lib/fontkit 1.1.1 are bundled under `public/vendor/`, with their licenses alongside them. The build uses only the Node.js standard library.
 
 Liberation Serif fonts are bundled under `public/fonts/` with their SIL Open Font License. PDF export runs entirely in the browser, without uploads or runtime CDN requests. Legacy html2canvas files are retained in the vendor directory but are no longer loaded or used.
+
+## Updating the published app
+
+The build assigns a content version to the entry script, stylesheet, and the complete JavaScript module graph. New releases therefore load fresh document/export code even when old canonical script URLs remain cached. `dist/build.json` records the active release, F4 paper requirement, and vector PDF export. Deploy the newly built `dist/` and reopen the published page; a unique `?v=<release>` suffix can also force a fresh HTML request. Browser-saved attendance data stays on the same origin.
