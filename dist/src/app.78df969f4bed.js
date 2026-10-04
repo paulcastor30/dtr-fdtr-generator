@@ -1,6 +1,6 @@
-import {PAPER,CSS_PAPER} from './paper-size.js';
-import {DAYS,CATEGORIES,defaultOffice,validateOffice,consultationWeeks,freshState,buildMonth,monthRecord,validateMonth,validateSessions,validateRelatedActivity,validateBackup,daysInMonth,timeLabel,duration} from './model.js';
-import {generateDocx,renderDocument,makePDF,download} from './documents.js';
+import {PAPER,CSS_PAPER} from './paper-size.78df969f4bed.js';
+import {DAYS,CATEGORIES,defaultOffice,validateOffice,consultationWeeks,freshState,buildMonth,monthRecord,validateMonth,validateSessions,validateRelatedActivity,validateBackup,daysInMonth,timeLabel,duration} from './model.78df969f4bed.js';
+import {generateDocx,renderDocument,makePDF,download} from './documents.78df969f4bed.js';
 const KEY='dtr-fdtr-generator-v1',main=document.querySelector('main'),dialog=document.querySelector('#dialog');
 let state=freshState(),storageIssue='',view='home',type='dtr',step=0,month=new Date().toLocaleDateString('en-CA',{year:'numeric',month:'2-digit'}).slice(0,7),previewBlob=null,restoreCandidate=null,undo=null,changeDraft=null,scheduleIndex=null,toastTimer,previewRequest=0;
 if(!/^\d{4}-\d{2}$/.test(month))month=`${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;

@@ -71,3 +71,11 @@ In the FDTR monthly form, choose **Add a change → Related activity**. Select a
 Descriptions print in an available Class/Consultation row, while activity times and hours remain in Related activities. Order references remain in the monthly review and backup. Existing recurring Related activities are retained for compatibility and can be removed manually from saved setup. DTR behavior, templates and export geometry are unchanged.
 
 `tests/fdtr-activities.test.mjs` covers replacement, half days, custom clipping, totals, month/form isolation and backup validation. `scripts/fdtr-activity-check.mjs` covers the browser entry, editing, Word/PDF export and mobile layout.
+
+## FDTR administrative office arrangement
+
+FDTR accounts for administrative work in unoccupied office periods by default. Adjust office start/end, lunch, working days and the weekly consultation target under **Your Usual Schedule → Office arrangement**. Turn the option off for manual entry. Generated periods appear as Others (Adm., R&E) and are identified in Review Full Month. Confirm they reflect work performed.
+
+The app fills the office-day gaps, rather than merely increasing the total to eight. Evening classes remain additional recorded time. No fill is added outside schedule dates or office working days. Holiday/leave/blank-day changes and explicit Changed Schedule entries override the generated hours; Related activities replace their affected portions. Edit a regular FDTR day to start with its current periods and enter an adjusted or partial schedule. Existing three-period-per-category capacity checks still apply.
+
+Weekly consultation review counts Monday–Sunday across adjacent months, uses the configurable target (default 10 hours), and flags weeks with schedule exceptions for review. It does not prorate requirements, generate consultation time or block downloads for a shortage. `tests/fdtr-office.test.mjs` and `scripts/fdtr-office-check.mjs` verify these behaviors.
