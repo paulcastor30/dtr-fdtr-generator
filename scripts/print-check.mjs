@@ -2,7 +2,7 @@ import {createRequire} from 'node:module';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const require=createRequire(process.env.RUNTIME_MODULES+'/package.json');
-const {chromium}=require('playwright'),{PDFDocument,decodePDFRawStream}=require('pdf-lib');
+const {chromium}=require('playwright'),{PDFDocument,PDFName}=require('pdf-lib');
 const browser=await chromium.launch({executablePath:'/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',headless:true});
 try {
  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];
@@ -11,7 +11,7 @@ try {
  await page.evaluate(async()=>{
   const {freshState}=await import('./src/model.js'),s=freshState();
   s.profile.name='TEST FACULTY';s.setups.dtr.ready=true;s.setups.dtr.signatory='TEST SIGNATORY';
-  // Valid entries every day cause docx-preview to grow its single page beyond A4.
+  // Valid entries every day cause docx-preview to grow its single page beyond F4.
   s.setups.dtr.schedule=[{category:'lecture',days:[0,1,2,3,4,5,6],start:'08:00',end:'09:00'}];
   localStorage.setItem('dtr-fdtr-generator-v1',JSON.stringify(s));
  });
@@ -21,7 +21,7 @@ try {
  await page.locator('#reviewed:not([disabled])').waitFor();
  assert.equal(await page.locator('section.institutional').count(),1);
  const metrics=await page.locator('section.institutional').evaluate(p=>({width:p.offsetWidth,height:p.offsetHeight}));
- assert.ok(metrics.height>1126,'Must reproduce the formerly blocked preview');
+ assert.ok(await page.locator('section.institutional').evaluate(p=>+p.dataset.printFit<1),'Tall content must already fit within the F4 preview');
  assert.equal(await page.locator('#preview-status .errors').count(),0);
  assert.ok(await page.locator('[data-action="pdf"]').isDisabled());
  await page.locator('#reviewed').check();
@@ -34,13 +34,9 @@ try {
  }
  const pdf=await PDFDocument.load(await fs.readFile('qa/print-regression.pdf'));
  assert.equal(pdf.getPageCount(),1);
- const output=pdf.getPage(0);assert.ok(Math.abs(output.getWidth()-595.276)<0.01);assert.ok(Math.abs(output.getHeight()-841.89)<0.01);
- const contents=output.node.Contents(),stream=pdf.context.lookup(contents.get(0));
- const operators=Buffer.from(decodePDFRawStream(stream).decode()).toString();
- const transforms=[...operators.matchAll(/([\d.]+) 0 0 ([\d.]+) 0 0 cm/g)];
- const imageTransform=transforms.find(m=>Number(m[1])>1&&Number(m[2])>1);assert.ok(imageTransform,'PDF image transform exists');
- assert.ok(Math.abs(Number(imageTransform[1])/Number(imageTransform[2])-metrics.width/metrics.height)<0.002,'PDF preserves form proportions');
+ const output=pdf.getPage(0);assert.ok(Math.abs(output.getWidth()-612)<0.01);assert.ok(Math.abs(output.getHeight()-936)<0.01);
+ assert.equal(pdf.context.enumerateIndirectObjects().filter(([,v])=>v.dict?.get(PDFName.of('Subtype'))===PDFName.of('Image')).length,0,'PDF must use crisp vector text');
  await page.locator('[data-action="actual"]').click();await page.screenshot({path:'qa/print-regression.png',fullPage:true});
  assert.deepEqual(errors,[]);
- console.log('PASS: valid tall DTR preview, review gate, Word and PDF downloads, one A4 PDF page, proportional fit, no browser errors.');
+ console.log('PASS: valid tall DTR preview, review gate, Word and PDF downloads, one F4 PDF page, F4 preview fit, vector output, no browser errors.');
 } finally {await browser.close();}

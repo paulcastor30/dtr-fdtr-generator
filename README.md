@@ -31,10 +31,10 @@ Alternatively, upload the contents of `dist/` to any ordinary static host. All b
 
 - DTR is derived from the supplied Word package, retaining its daily table structures and two-copy arrangement. The working template uses native Word tables and fields replaced in place.
 - FDTR is an editable Word translation of the supplied Excel form, retaining four activity groups, three entries per category/day, 31 date positions, and the two-page division after day 15.
-- Both are A4 portrait as explicitly requested. The source DTR was 8.5 × 13 inches. A4 required sizing and placement adjustments, documented in `TEMPLATE-NOTES.md`.
+- Both forms use the institution-required F4 / folio size: **8.5 × 13 inches (215.9 × 330.2 mm), portrait**. The Word section size, displayed preview, exported PDF, and browser print size agree. The prepared form layout is retained; earlier adaptations are documented in `TEMPLATE-NOTES.md`.
 - The original reference files are not modified or included in the public website. Published templates contain placeholders, not the supplied person's name, signatories, or August attendance.
-- Word output is a real editable `.docx` ZIP package. PDF is a 3× rasterization of the same generated Word document as displayed in the preview (approximately 288 dpi), on exact 210 × 297 mm pages. It is printable but its text is not searchable/editable.
-- Browser rendering and desktop Word are different layout engines. Automated tests and independent LibreOffice rendering have been used; pixel-identical Microsoft Word rendering and a real faculty usability acceptance session are not certified. An institutional review of the A4 adaptation is still needed before treating it as an approved replacement form.
+- Word output is a real editable `.docx` ZIP package. PDF uses selectable vector text and vector table lines on exact 215.9 × 330.2 mm pages. Its positions come from the displayed preview, and the same bundled Liberation Serif font is used in the preview and embedded in the PDF. F4 fitting is shown in the preview before download, so exporting does not rescale a screenshot.
+- Browser rendering and desktop Word are different layout engines. Automated tests and independent LibreOffice rendering have been used; pixel-identical Microsoft Word rendering and a real faculty usability acceptance session are not certified. An institutional review of the prepared layout is still needed before treating it as an approved replacement form.
 
 ## Time and schedule rules
 
@@ -56,4 +56,6 @@ These tests cover calendar boundaries, leap years, time arithmetic, overlaps, fo
 
 ## Included libraries
 
-JSZip, docx-preview 0.3.6, html2canvas 1.4.1, and pdf-lib are bundled under `public/vendor/`, with their licenses alongside them. The build uses only the Node.js standard library.
+JSZip, docx-preview 0.3.6, pdf-lib, and @pdf-lib/fontkit 1.1.1 are bundled under `public/vendor/`, with their licenses alongside them. The build uses only the Node.js standard library.
+
+Liberation Serif fonts are bundled under `public/fonts/` with their SIL Open Font License. PDF export runs entirely in the browser, without uploads or runtime CDN requests. Legacy html2canvas files are retained in the vendor directory but are no longer loaded or used.

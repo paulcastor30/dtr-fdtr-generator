@@ -37,7 +37,7 @@ def setp(p,value,size=10,bold=False):
 source=Path(args.dtr)
 with ZipFile(source) as z:
  parts={n:z.read(n) for n in z.namelist()}
-d=E.fromstring(parts['word/document.xml']);body=d.find('w:body',N);children=list(body);sect=deepcopy(children[-1]);pg=sect.find('w:pgSz',N);pg.set(qn('w:w'),'11906');pg.set(qn('w:h'),'16838');cols=sect.find('w:cols',N);sect.remove(cols)
+d=E.fromstring(parts['word/document.xml']);body=d.find('w:body',N);children=list(body);sect=deepcopy(children[-1]);pg=sect.find('w:pgSz',N);pg.set(qn('w:w'),'12240');pg.set(qn('w:h'),'18720');cols=sect.find('w:cols',N);sect.remove(cols)
 for c in list(body):body.remove(c)
 outer=el('tbl');pr=el('tblPr');pr.append(el('tblW',w=10466,type='dxa'));pr.append(el('tblLayout',type='fixed'));pr.append(el('tblInd',w=0,type='dxa'));mar=el('tblCellMar')
 for side in ['top','left','bottom','right']:mar.append(el(side,w=0,type='dxa'))
@@ -113,7 +113,7 @@ with ZipFile(ROOT/'public/templates/dtr.docx','w',ZIP_DEFLATED) as z:
   z.writestr(n,b)
 # FDTR: convert source's real grid, styles, and merges to native Word tables.
 s=load_workbook(args.fdtr).active
-doc=Document();sec=doc.sections[0];sec.page_width=Mm(210);sec.page_height=Mm(297);sec.top_margin=Inches(.5);sec.bottom_margin=Inches(.5);sec.left_margin=Inches(.3);sec.right_margin=Inches(.25)
+doc=Document();sec=doc.sections[0];sec.page_width=Inches(8.5);sec.page_height=Inches(13);sec.top_margin=Inches(.5);sec.bottom_margin=Inches(.5);sec.left_margin=Inches(.3);sec.right_margin=Inches(.25)
 doc.styles['Normal'].font.name='Times New Roman';doc.styles['Normal'].font.size=Pt(7.5);doc.styles['Normal'].paragraph_format.space_after=Pt(0)
 for page,(start,end) in enumerate([(1,58),(63,123)]):
  if page:doc.add_page_break()
@@ -198,4 +198,4 @@ for i,row in enumerate(D(source).tables[0].rows[1:],1):
  fixture['dtr'][str(i)]={'sessions':sessions,'label':cs[1] if cs[1] in ['HOLIDAY','SATURDAY','SUNDAY'] else ''}
 (ROOT/'qa/august-fixture.json').write_text(json.dumps(fixture,indent=2))
 (ROOT/'qa/source-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [source,Path(args.fdtr)]},indent=2))
-print('Prepared sanitized A4 templates and private QA fixture')
+print('Prepared sanitized F4 templates and private QA fixture')
