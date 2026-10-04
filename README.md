@@ -79,3 +79,11 @@ FDTR accounts for administrative work in unoccupied office periods by default. A
 The app fills the office-day gaps, rather than merely increasing the total to eight. Evening classes remain additional recorded time. No fill is added outside schedule dates or office working days. Holiday/leave/blank-day changes and explicit Changed Schedule entries override the generated hours; Related activities replace their affected portions. Edit a regular FDTR day to start with its current periods and enter an adjusted or partial schedule. Existing three-period-per-category capacity checks still apply.
 
 Weekly consultation review counts Monday–Sunday across adjacent months, uses the configurable target (default 10 hours), and flags weeks with schedule exceptions for review. It does not prorate requirements, generate consultation time or block downloads for a shortage. `tests/fdtr-office.test.mjs` and `scripts/fdtr-office-check.mjs` verify these behaviors.
+
+## Interface and accessibility
+
+The interface uses a three-step monthly flow: choose a month, add changes, review and download. Full form names help first-time users choose DTR or FDTR. Optional office settings and supporting monthly reviews expand on request; their summary status stays visible. The review confirmation is beside the download controls, with PDF presented first for printing.
+
+Controls support keyboard use, visible focus, named dialogs, focus restoration, larger touch targets, reduced motion, forced colors and narrow screens. Undo actions have no countdown. The saved-data indicator remains visible on mobile. All institutional templates, calculations, F4 sizing and the vector exporter remain unchanged.
+
+Run `scripts/interface-check.mjs` with `RUNTIME_MODULES`, optionally `BASE_URL` and `AXE_PATH` (a local axe-core script), for accessibility and keyboard checks. Tested 320px layouts, doubled interface text and 11 interface states. Automated checks are not a certification and do not replace assistive-technology and usability testing with users.

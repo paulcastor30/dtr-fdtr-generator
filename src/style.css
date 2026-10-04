@@ -7,3 +7,29 @@
 #document-preview .institutional,#document-preview .institutional *{font-family:FormSerif,serif!important}
 
 #document-preview .institutional *{font-kerning:none;font-variant-ligatures:none}
+
+/* Interface refinements; institutional document rules above are preserved. */
+:root{--muted:#455d68}
+button{min-height:48px}button,input,select,summary{touch-action:manipulation}
+:focus-visible{outline:3px solid #005fcc;outline-offset:4px}
+button,input,select,summary{scroll-margin-block:24px}
+header{height:auto;min-height:80px}header .brand{min-height:48px}
+main>.intro{max-width:730px;margin-top:18px}main>.intro h1{max-width:650px;line-height:1.18}
+.journey{display:flex;flex-wrap:wrap;gap:14px 28px;padding:0;list-style:none;color:var(--muted);margin:26px 0}
+.journey li{display:flex;align-items:center;gap:10px;line-height:1.5}.journey span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e1eeec;color:#0d514d;font-weight:700}
+.choices{gap:20px;margin-top:26px}.choice{min-height:245px;box-shadow:none;border-color:#b9ccca;padding:28px}.choice:hover{background:#f0f7f5;border-color:#0d5a56}.choice strong{font-size:26px;line-height:1.25}.choice .doc-label{margin-bottom:18px}.choice .status{font-size:15px}
+.home-help{max-width:740px;margin-top:28px;border-top:1px solid var(--border);padding-top:8px}.home-help p{font-size:16px;color:var(--muted)}
+.panel{box-shadow:none}main .panel label,dialog label,.time-label{font-size:16px}.hint,.check-row,.schedule-list small,.aside-note p{font-size:16px}.time-label{display:block;font-weight:600;margin-bottom:6px}
+input,select{min-height:48px;border-color:#758b96;font-size:16px}input[type=checkbox]{border-color:#758b96}.check-row{min-height:48px;padding-block:8px}
+fieldset{border:1px solid #b9c9cf;border-radius:8px;padding:16px;margin:20px 0}legend{font-weight:600;padding-inline:6px}
+.office-options{margin-top:24px;border-top:1px solid var(--border);padding-top:8px}.office-options>summary{font-size:16px}.office-options[open]>summary{margin-bottom:16px}
+.next-step{background:#e8f1ef;border:1px solid #b9ceca;border-radius:12px;padding:24px;margin-bottom:24px}.next-step .actions{margin-top:14px}.next-step .hint{margin-bottom:0}
+.supporting-review>summary{line-height:1.5;font-size:16px}.supporting-review{padding:14px 24px}.supporting-review[open]>summary{margin-bottom:14px}.supporting-review ul{padding-left:24px}.supporting-review li{line-height:1.7;margin-block:12px}.month-tools{margin-top:24px;border-top:1px solid var(--border);padding-top:8px}
+.changes-list small{display:block;line-height:1.5;color:var(--muted);margin-top:4px}.changes-list li>div,.schedule-list li>div:last-child{display:flex;flex-wrap:wrap;gap:4px}
+.preview-check{border:1px solid var(--border);margin-top:0;margin-bottom:8px}.preview-check p{margin-top:0}.preview-toolbar{position:static;background:transparent;backdrop-filter:none;gap:10px;padding:16px 0}.preview-guidance{margin-bottom:14px}.preview-stage{scroll-margin-top:16px}.download-label{font-size:14px}.preview-toolbar button{min-height:64px}
+#toast{display:none;max-width:min(640px,calc(100vw - 32px));line-height:1.5}#toast.visible{display:flex;align-items:center;gap:10px;flex-wrap:wrap}#toast button{min-height:44px;margin-left:0}#toast button.quiet{color:#fff;border-color:#99b3b5}
+.table-scroll{overscroll-behavior-inline:contain}table.review{font-size:16px}table.review th{font-size:14px}.errors strong{display:block;margin-bottom:8px}.errors li{line-height:1.6;margin-block:4px}
+@media(max-width:750px){header{flex-wrap:wrap;padding:12px 18px}nav{flex-wrap:wrap;gap:10px}#save-status{display:inline;font-size:13px}.brand-light{display:inline}.journey{gap:12px;font-size:15px}.journey li{flex-basis:100%}.choice{min-height:220px;padding:24px}.choice strong{font-size:25px}.panel{padding:20px}.next-step{padding:20px}.supporting-review{padding:10px 20px}.schedule-list li,.changes-list li{align-items:flex-start;flex-wrap:wrap}.month-layout>.aside-note{order:2}.steps{flex-wrap:wrap}.steps li{min-width:110px;font-size:14px}.time-range{grid-template-columns:1fr}.time-controls{gap:8px}.time-controls select{min-height:48px}dialog{max-height:calc(100dvh - 28px)}.preview-toolbar button{flex:1 1 140px}.actions.right{justify-content:flex-start}main{padding-top:30px}footer{font-size:14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important}}
+@media(forced-colors:active){button,input,select{border:1px solid ButtonText}:focus-visible{outline:3px solid Highlight}.current,.tag,.journey span{border:1px solid CanvasText}}
+main{padding-top:36px}.back{margin-bottom:12px}.heading-row .eyebrow{margin-bottom:12px}.month-layout .summary{padding-top:16px;margin-top:16px}.month-layout .panel{margin-bottom:18px}
