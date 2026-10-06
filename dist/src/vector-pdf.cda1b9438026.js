@@ -1,4 +1,4 @@
-import {PAPER,CSS_PAPER} from './paper-size.14116c902b79.js';
+import {PAPER,CSS_PAPER} from './paper-size.cda1b9438026.js';
 const fontFiles={regular:'Regular',bold:'Bold',italic:'Italic',boldItalic:'BoldItalic'};
 let fontBytesPromise;
 function fontBytes(){return fontBytesPromise??=Promise.all(Object.entries(fontFiles).map(async([key,name])=>{

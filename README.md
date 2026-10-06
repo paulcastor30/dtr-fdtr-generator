@@ -87,3 +87,7 @@ The interface uses a three-step monthly flow: choose a month, add changes, revie
 Controls support keyboard use, visible focus, named dialogs, focus restoration, larger touch targets, reduced motion, forced colors and narrow screens. Undo actions have no countdown. The saved-data indicator remains visible on mobile. All institutional templates, calculations, F4 sizing and the vector exporter remain unchanged.
 
 Run `scripts/interface-check.mjs` with `RUNTIME_MODULES`, optionally `BASE_URL` and `AXE_PATH` (a local axe-core script), for accessibility and keyboard checks. Tested 320px layouts, doubled interface text and 11 interface states. Automated checks are not a certification and do not replace assistive-technology and usability testing with users.
+
+## FDTR Official Travel
+
+Choose **Add a change → Official Travel**, select the dates covered in the current month, and enter the travel authority / order reference. Destination and purpose are optional supporting details retained in review and backups. The form prints **OFFICIAL TRAVEL** and the reference on every selected date, replacing recurring class, consultation and office periods. Time entries and daily totals stay blank; the app does not assign attendance hours or treat the travel as Related activities. Keep the supporting authority with your submitted form. For travel across months, enter the covered dates in each month separately. Remove the change to restore the usual schedule, or use Undo. Existing backups remain compatible.
